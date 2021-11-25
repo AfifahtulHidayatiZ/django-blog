@@ -21,12 +21,20 @@ from django.urls import path
 from django.urls.conf import include
 
 from blog.views import home_view, about_view
-from users.views import register
+from users.views import register,profile
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('', include('blog.urls')),
     path('about/', about_view, name="blog-about"),
     path('admin/', admin.site.urls),
     path('register/', register, name="register"),
     path('login/', auth_view.LoginView.as_view(template_name="users/login.html"), name="login"),
-    path('logout/', auth_view.LogoutView.as_view(template_name="users/logout.html"), name="logout")
+    path('logout/', auth_view.LogoutView.as_view(template_name="users/logout.html"), name="logout"),
+    path('profile/', profile, name="profile"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
